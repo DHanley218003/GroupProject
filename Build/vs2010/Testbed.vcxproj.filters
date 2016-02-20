@@ -177,5 +177,6 @@
     <ClCompile Include="..\..\Testbed\Tests\TestEntries.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Testbed\Tests\Car.cpp" />
   </ItemGroup>
 </Project>

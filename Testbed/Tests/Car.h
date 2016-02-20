@@ -23,6 +23,11 @@
 class Car : Test
 {
 public:
+
+	b2DistanceJoint* m_tankTurret;
+	b2RevoluteJoint* m_gunBarrel;
+	b2Body* m_shell;
+
 	Car()
 	{		
 		m_hz = 4.0f;
@@ -212,18 +217,14 @@ public:
 			upperChassispt2.Set(vertices, 5);
 
 			b2PolygonShape gunpt1;
-			vertices[0].Set(5.59f, 1.86f);
+			vertices[0].Set(5.39f, 1.86f);
 			vertices[1].Set(6.79f, 2.01f);
 			vertices[2].Set(6.79f, 2.35f);
-			vertices[3].Set(5.34f, 2.82f);
+			vertices[3].Set(5.14f, 2.82f);
 			gunpt1.Set(vertices, 4);
 
 			b2PolygonShape gunpt2;
-			vertices[0].Set(6.79f, 2.01f);
-			vertices[1].Set(10.75f, 2.04f);
-			vertices[2].Set(10.75f, 2.22f);
-			vertices[3].Set(6.79f, 2.35f);
-			gunpt2.Set(vertices, 4);
+			gunpt2.SetAsBox(2.0f, 0.064f, b2Vec2(8.79f, 2.16f), 0.0f);
 
 			b2PolygonShape turret;
 			vertices[0].Set(2.63f, 2.84f);
@@ -244,9 +245,30 @@ public:
 			m_JadgTiger->CreateFixture(&lowerChassispt3, 1.0f);
 			m_JadgTiger->CreateFixture(&upperChassispt1, 1.0f);
 			m_JadgTiger->CreateFixture(&upperChassispt2, 1.0f);
-			m_JadgTiger->CreateFixture(&turret, 1.0f);
-			m_JadgTiger->CreateFixture(&gunpt1, 1.0f);
-			m_JadgTiger->CreateFixture(&gunpt2, 1.0f);
+
+			m_turret = m_world->CreateBody(&bd); // block on tank
+			m_turret->CreateFixture(&turret, 1.0f);
+
+			m_gun = m_world->CreateBody(&bd);
+			m_gun->CreateFixture(&gunpt1, 1.0f); // gun shroud
+			m_gun->CreateFixture(&gunpt2, 1.0f); // gun barrel
+
+			b2DistanceJointDef jtd;
+			jtd.collideConnected = true;
+			jtd.length = 0.2f;
+			jtd.Initialize(m_JadgTiger, m_turret, b2Vec2(4,1.84), b2Vec2(4,1.84));
+			m_tankTurret = (b2DistanceJoint*)m_world->CreateJoint(&jtd);
+
+
+			b2RevoluteJointDef jtbd;
+			jtbd.lowerAngle = -0.1f * b2_pi;
+			jtbd.upperAngle = 0.1f * b2_pi;
+			jtbd.enableLimit = true;
+			jtbd.motorSpeed = 0.0f;
+			jtbd.maxMotorTorque = 500.0f;
+			jtbd.enableMotor = true;
+			jtbd.Initialize(m_turret, m_gun, b2Vec2(5.32f, 2.29f));
+			m_gunBarrel = (b2RevoluteJoint*)m_world->CreateJoint(&jtbd);
 
 			b2FixtureDef fd;
 			fd.shape = &circle;
@@ -254,6 +276,7 @@ public:
 			fd.friction = 0.9f;
 			fd.filter.categoryBits = 0x0002;
 			fd.filter.maskBits = 0xFFFF & ~0x0004;
+
 			
 			bd.position.Set(1.71f, 0.4f);
 			m_wheel1 = m_world->CreateBody(&bd);
@@ -278,6 +301,10 @@ public:
 			fd.filter.categoryBits = 0x0004;
 			fd.filter.maskBits = 0xFFFF;
 
+			bd.position.Set(1.36f, 0.67f);
+			m_wheel0 = m_world->CreateBody(&bd);
+			m_wheel0->CreateFixture(&fd);
+
 			bd.position.Set(2.19f, 0.4f);
 			m_wheel2 = m_world->CreateBody(&bd);
 			m_wheel2->CreateFixture(&fd);
@@ -294,12 +321,16 @@ public:
 			m_wheel8 = m_world->CreateBody(&bd);
 			m_wheel8->CreateFixture(&fd);
 
+			bd.position.Set(7.22f, 0.85f);
+			m_wheel10 = m_world->CreateBody(&bd);
+			m_wheel10->CreateFixture(&fd);
+
 			b2WheelJointDef jd;
 			b2Vec2 axis(0.0f, 1.0f);
 
 			jd.Initialize(m_JadgTiger, m_wheel1, m_wheel1->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 20.0f;
+			jd.maxMotorTorque = 30.0f;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -307,67 +338,67 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel2, m_wheel2->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring2 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel3, m_wheel3->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring3 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel4, m_wheel4->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring4 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel5, m_wheel5->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring5 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel6, m_wheel6->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring6 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel7, m_wheel7->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring6 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring7 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel8, m_wheel8->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring6 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring8 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel9, m_wheel9->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 10.0f;
-			jd.enableMotor = false;
+			jd.maxMotorTorque = 30.0f;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring6 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring9 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 		}
 	}
 
@@ -377,27 +408,111 @@ public:
 		{
 		case 'a':
 			m_spring1->SetMotorSpeed(m_speed);
+			m_spring2->SetMotorSpeed(m_speed);
+			m_spring3->SetMotorSpeed(m_speed);
+			m_spring4->SetMotorSpeed(m_speed);
+			m_spring5->SetMotorSpeed(m_speed);
+			m_spring6->SetMotorSpeed(m_speed);
+			m_spring7->SetMotorSpeed(m_speed);
+			m_spring8->SetMotorSpeed(m_speed);
+			m_spring9->SetMotorSpeed(m_speed);
 			break;
 
 		case 's':
 			m_spring1->SetMotorSpeed(0.0f);
+			m_spring2->SetMotorSpeed(0.0f);
+			m_spring3->SetMotorSpeed(0.0f);
+			m_spring4->SetMotorSpeed(0.0f);
+			m_spring5->SetMotorSpeed(0.0f);
+			m_spring6->SetMotorSpeed(0.0f);
+			m_spring7->SetMotorSpeed(0.0f);
+			m_spring8->SetMotorSpeed(0.0f);
+			m_spring9->SetMotorSpeed(0.0f);
 			break;
 
 		case 'd':
 			m_spring1->SetMotorSpeed(-m_speed);
+			m_spring2->SetMotorSpeed(-m_speed);
+			m_spring3->SetMotorSpeed(-m_speed);
+			m_spring4->SetMotorSpeed(-m_speed);
+			m_spring5->SetMotorSpeed(-m_speed);
+			m_spring6->SetMotorSpeed(-m_speed);
+			m_spring7->SetMotorSpeed(-m_speed);
+			m_spring8->SetMotorSpeed(-m_speed);
+			m_spring9->SetMotorSpeed(-m_speed);
 			break;
 
 		case 'q':
 			m_hz = b2Max(0.0f, m_hz - 1.0f);
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
+			m_spring3->SetSpringFrequencyHz(m_hz);
+			m_spring4->SetSpringFrequencyHz(m_hz);
+			m_spring5->SetSpringFrequencyHz(m_hz);
+			m_spring6->SetSpringFrequencyHz(m_hz);
+			m_spring7->SetSpringFrequencyHz(m_hz);
+			m_spring8->SetSpringFrequencyHz(m_hz);
+			m_spring9->SetSpringFrequencyHz(m_hz);
 			break;
 
 		case 'e':
 			m_hz += 1.0f;
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
+			m_spring3->SetSpringFrequencyHz(m_hz);
+			m_spring4->SetSpringFrequencyHz(m_hz);
+			m_spring5->SetSpringFrequencyHz(m_hz);
+			m_spring6->SetSpringFrequencyHz(m_hz);
+			m_spring7->SetSpringFrequencyHz(m_hz);
+			m_spring8->SetSpringFrequencyHz(m_hz);
+			m_spring9->SetSpringFrequencyHz(m_hz);
 			break;
+
+		case 'u':
+			if (m_gunBarrel->GetJointAngle() < (0.1f*b2_pi))
+				m_gunBarrel->SetMotorSpeed(1.0f);
+			break;
+
+		case 'j':
+			if (m_gunBarrel->GetJointAngle() < (-0.1f*b2_pi))
+				m_gunBarrel->SetMotorSpeed(-1.0f);
+			break;
+
+		case 'm':
+			{
+				m_gunBarrel->SetMotorSpeed(0.0f);
+
+				if (m_shell != NULL)
+				{
+					m_world->DestroyBody(m_shell);
+					m_shell = NULL;
+				}
+				b2CircleShape shape;
+				shape.m_radius = 0.09f;
+
+				b2FixtureDef fsd;
+				fsd.shape = &shape;
+				fsd.density = 20.0f;
+				fsd.restitution = 0.05f;
+
+				b2Vec2 posn = m_gunBarrel->GetAnchorB();
+				float32 angle = m_gunBarrel->GetJointAngle()
+					+ m_turret->GetAngle();
+
+				posn.x += 1.5f * cos(angle);
+				posn.y += 1.5f * sin(angle);
+
+				b2BodyDef bsd;
+				bsd.type = b2_dynamicBody;
+				bsd.bullet = true;
+				bsd.position.Set(posn.x, posn.y);
+
+				m_shell = m_world->CreateBody(&bsd);
+				m_shell->CreateFixture(&fsd);
+				m_shell->SetLinearVelocity(b2Vec2(400.0f*cos(angle),
+					400.0f*sin(angle)));
+			}
+
 		}
 	}
 
@@ -418,6 +533,9 @@ public:
 	}
 
 	b2Body* m_JadgTiger;
+	b2Body* m_turret;
+	b2Body* m_gun;
+	b2Body* m_wheel0;
 	b2Body* m_wheel1;
 	b2Body* m_wheel2;
 	b2Body* m_wheel3;
@@ -427,6 +545,7 @@ public:
 	b2Body* m_wheel7;
 	b2Body* m_wheel8;
 	b2Body* m_wheel9;
+	b2Body* m_wheel10;
 
 	float32 m_hz;
 	float32 m_zeta;
@@ -437,6 +556,9 @@ public:
 	b2WheelJoint* m_spring4;
 	b2WheelJoint* m_spring5;
 	b2WheelJoint* m_spring6;
+	b2WheelJoint* m_spring7;
+	b2WheelJoint* m_spring8;
+	b2WheelJoint* m_spring9;
 };
 
 #endif
