@@ -238,11 +238,11 @@ public:
 			bd.type = b2_dynamicBody;
 			bd.position.Set(0.0f, 0.0f);
 			m_JadgTiger = m_world->CreateBody(&bd);
-			m_JadgTiger->CreateFixture(&lowerChassispt1, 1.0f);
-			m_JadgTiger->CreateFixture(&lowerChassispt2, 1.0f);
-			m_JadgTiger->CreateFixture(&lowerChassispt3, 1.0f);
-			m_JadgTiger->CreateFixture(&upperChassispt1, 1.0f);
-			m_JadgTiger->CreateFixture(&upperChassispt2, 1.0f);
+			m_JadgTiger->CreateFixture(&lowerChassispt1, 66.79f);
+			m_JadgTiger->CreateFixture(&lowerChassispt2, 66.79f);
+			m_JadgTiger->CreateFixture(&lowerChassispt3, 66.79f);
+			m_JadgTiger->CreateFixture(&upperChassispt1, 66.79f);
+			m_JadgTiger->CreateFixture(&upperChassispt2, 66.79f);
 
 			m_turret = m_world->CreateBody(&bd); // block on tank
 			m_turret->CreateFixture(&turret, 1.0f);
@@ -270,29 +270,29 @@ public:
 
 			b2FixtureDef fd;
 			fd.shape = &circle;
-			fd.density = 1.0f;
+			fd.density = 66.79f;
 			fd.friction = 0.9f;
 			fd.filter.categoryBits = 0x0002;
 			fd.filter.maskBits = 0xFFFF & ~0x0004;
 
 			
-			bd.position.Set(2.0f, 0.4f);
+			bd.position.Set(2.33f, 0.4f);
 			m_wheel1 = m_world->CreateBody(&bd);
 			m_wheel1->CreateFixture(&fd);
 
-			bd.position.Set(2.83f, 0.4f);
+			bd.position.Set(3.33f, 0.4f);
 			m_wheel3 = m_world->CreateBody(&bd);
 			m_wheel3->CreateFixture(&fd);
 
-			bd.position.Set(4.07f, 0.4f);
+			bd.position.Set(4.33f, 0.4f);
 			m_wheel5 = m_world->CreateBody(&bd);
 			m_wheel5->CreateFixture(&fd);
 
-			bd.position.Set(5.3f, 0.4f);
+			bd.position.Set(5.33f, 0.4f);
 			m_wheel7 = m_world->CreateBody(&bd);
 			m_wheel7->CreateFixture(&fd);
 
-			bd.position.Set(6.57f, 0.4f);
+			bd.position.Set(6.33f, 0.4f);
 			m_wheel9 = m_world->CreateBody(&bd);
 			m_wheel9->CreateFixture(&fd);
 
@@ -303,19 +303,19 @@ public:
 			m_wheel0 = m_world->CreateBody(&bd);
 			m_wheel0->CreateFixture(&fd);
 
-			bd.position.Set(2.19f, 0.4f);
+			bd.position.Set(2.83f, 0.4f);
 			m_wheel2 = m_world->CreateBody(&bd);
 			m_wheel2->CreateFixture(&fd);
 
-			bd.position.Set(3.43f, 0.4f);
+			bd.position.Set(3.83f, 0.4f);
 			m_wheel4 = m_world->CreateBody(&bd);
 			m_wheel4->CreateFixture(&fd);
 
-			bd.position.Set(4.69f, 0.4f);
+			bd.position.Set(4.83f, 0.4f);
 			m_wheel6 = m_world->CreateBody(&bd);
 			m_wheel6->CreateFixture(&fd);
 
-			bd.position.Set(5.94f, 0.4f);
+			bd.position.Set(5.83f, 0.4f);
 			m_wheel8 = m_world->CreateBody(&bd);
 			m_wheel8->CreateFixture(&fd);
 
