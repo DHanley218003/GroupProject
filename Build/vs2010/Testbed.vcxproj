@@ -34,7 +34,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -214,7 +214,7 @@
     <ClInclude Include="..\..\Testbed\Tests\Bridge.h" />
     <ClInclude Include="..\..\Testbed\Tests\BulletTest.h" />
     <ClInclude Include="..\..\Testbed\Tests\Cantilever.h" />
-    <ClInclude Include="..\..\Testbed\Tests\Car.h" />
+    <ClInclude Include="..\..\Testbed\Tests\JadgTiger.h" />
     <ClInclude Include="..\..\Testbed\Tests\Chain.h" />
     <ClInclude Include="..\..\Testbed\Tests\CharacterCollision.h" />
     <ClInclude Include="..\..\Testbed\Tests\CollisionFiltering.h" />

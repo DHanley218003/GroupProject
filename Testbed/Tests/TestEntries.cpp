@@ -35,7 +35,6 @@ using namespace std;
 #include "BulletTest.h"
 #include "Cantilever.h"
 #include "A00207299.h"
-#include "Car.h"
 #include "ContinuousTest.h"
 #include "Chain.h"
 #include "CharacterCollision.h"
@@ -76,9 +75,11 @@ using namespace std;
 #include "VaryingRestitution.h"
 #include "VerticalStack.h"
 #include "Web.h" 
+#include "JadgTiger.h"
 
 TestEntry g_testEntries[] =
 {
+	{"JadgTiger", JadgTiger::Create},
 	{"Tumbler", Tumbler::Create},
 	{"Tiles", Tiles::Create},
 	{"Dump Shell", DumpShell::Create},
@@ -89,7 +90,6 @@ TestEntry g_testEntries[] =
 	{"Edge Test", EdgeTest::Create},
 	{"Body Types", BodyTypes::Create},
 	{"Shape Editing", ShapeEditing::Create},
-	{"Car", Car::Create},
 	{"TrackedCar", TrackedCar::Create},
 	{"TigerI",TigerI::Create},
 	{"T34-85",T34_85::Create},
