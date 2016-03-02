@@ -24,13 +24,15 @@ class JadgTiger : Test
 {
 public:
 
-	
-
 	JadgTiger()
 	{		
 		m_hz = 4.0f;
 		m_zeta = 0.7f;
-		m_speed = 4.6f;
+		m_speed = 0;
+		m_mass = 11.95f;
+		m_torque = 100.0f;
+		m_bulletVelocity = 950.0f;
+		m_roundType = 0;
 
 		b2Body* ground = NULL;
 		{
@@ -176,6 +178,7 @@ public:
 
 		// JadgTiger
 		{
+			m_shell = NULL;
 			b2PolygonShape lowerChassispt1;
 			b2Vec2 vertices[8];
 			vertices[0].Set(0.71f, 0.95f);
@@ -238,11 +241,11 @@ public:
 			bd.type = b2_dynamicBody;
 			bd.position.Set(0.0f, 0.0f);
 			m_JadgTiger = m_world->CreateBody(&bd);
-			m_JadgTiger->CreateFixture(&lowerChassispt1, 66.79f);
-			m_JadgTiger->CreateFixture(&lowerChassispt2, 66.79f);
-			m_JadgTiger->CreateFixture(&lowerChassispt3, 66.79f);
-			m_JadgTiger->CreateFixture(&upperChassispt1, 66.79f);
-			m_JadgTiger->CreateFixture(&upperChassispt2, 66.79f);
+			m_JadgTiger->CreateFixture(&lowerChassispt1, m_mass);
+			m_JadgTiger->CreateFixture(&lowerChassispt2, m_mass);
+			m_JadgTiger->CreateFixture(&lowerChassispt3, m_mass);
+			m_JadgTiger->CreateFixture(&upperChassispt1, m_mass);
+			m_JadgTiger->CreateFixture(&upperChassispt2, m_mass);
 
 			m_turret = m_world->CreateBody(&bd); // block on tank
 			m_turret->CreateFixture(&turret, 1.0f);
@@ -259,8 +262,8 @@ public:
 
 
 			b2RevoluteJointDef jtbd;
-			jtbd.lowerAngle = -0.1f * b2_pi;
-			jtbd.upperAngle = 0.1f * b2_pi;
+			jtbd.lowerAngle = -0.07f;
+			jtbd.upperAngle = 0.15f;
 			jtbd.enableLimit = true;
 			jtbd.motorSpeed = 0.0f;
 			jtbd.maxMotorTorque = 500.0f;
@@ -270,7 +273,7 @@ public:
 
 			b2FixtureDef fd;
 			fd.shape = &circle;
-			fd.density = 66.79f;
+			fd.density = m_mass;
 			fd.friction = 0.9f;
 			fd.filter.categoryBits = 0x0002;
 			fd.filter.maskBits = 0xFFFF & ~0x0004;
@@ -299,6 +302,7 @@ public:
 			fd.filter.categoryBits = 0x0004;
 			fd.filter.maskBits = 0xFFFF;
 
+
 			bd.position.Set(1.36f, 0.67f);
 			m_wheel0 = m_world->CreateBody(&bd);
 			m_wheel0->CreateFixture(&fd);
@@ -319,7 +323,9 @@ public:
 			m_wheel8 = m_world->CreateBody(&bd);
 			m_wheel8->CreateFixture(&fd);
 
-			bd.position.Set(7.22f, 0.85f);
+			circle.m_radius = 0.4f;
+
+			bd.position.Set(7.15f, 0.85f);
 			m_wheel10 = m_world->CreateBody(&bd);
 			m_wheel10->CreateFixture(&fd);
 
@@ -338,7 +344,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel1, m_wheel1->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -346,7 +352,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel2, m_wheel2->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -354,7 +360,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel3, m_wheel3->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -362,7 +368,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel4, m_wheel4->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -370,7 +376,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel5, m_wheel5->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -378,7 +384,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel6, m_wheel6->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -386,7 +392,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel7, m_wheel7->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -394,7 +400,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel8, m_wheel8->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -402,7 +408,7 @@ public:
 
 			jd.Initialize(m_JadgTiger, m_wheel9, m_wheel9->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
-			jd.maxMotorTorque = 30.0f;
+			jd.maxMotorTorque = m_torque;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
@@ -415,6 +421,7 @@ public:
 		switch (key)
 		{
 		case 'a':
+			m_speed = b2Min(5.0f, m_speed + 1.0f);
 			m_spring1->SetMotorSpeed(m_speed);
 			m_spring2->SetMotorSpeed(m_speed);
 			m_spring3->SetMotorSpeed(m_speed);
@@ -439,15 +446,16 @@ public:
 			break;
 
 		case 'd':
-			m_spring1->SetMotorSpeed(-m_speed);
-			m_spring2->SetMotorSpeed(-m_speed);
-			m_spring3->SetMotorSpeed(-m_speed);
-			m_spring4->SetMotorSpeed(-m_speed);
-			m_spring5->SetMotorSpeed(-m_speed);
-			m_spring6->SetMotorSpeed(-m_speed);
-			m_spring7->SetMotorSpeed(-m_speed);
-			m_spring8->SetMotorSpeed(-m_speed);
-			m_spring9->SetMotorSpeed(-m_speed);
+			m_speed = b2Max(-5.0f, m_speed - 1.0f);
+			m_spring1->SetMotorSpeed(m_speed);
+			m_spring2->SetMotorSpeed(m_speed);
+			m_spring3->SetMotorSpeed(m_speed);
+			m_spring4->SetMotorSpeed(m_speed);
+			m_spring5->SetMotorSpeed(m_speed);
+			m_spring6->SetMotorSpeed(m_speed);
+			m_spring7->SetMotorSpeed(m_speed);
+			m_spring8->SetMotorSpeed(m_speed);
+			m_spring9->SetMotorSpeed(m_speed);
 			break;
 
 		case 'q':
@@ -477,49 +485,68 @@ public:
 			break;
 
 		case 'u':
-			if (m_gunBarrel->GetJointAngle() < (0.1f*b2_pi))
+			if (m_gunBarrel->GetJointAngle() < (0.15f)) // 15 degrees elevation from level
 				m_gunBarrel->SetMotorSpeed(1.0f);
 			break;
 
 		case 'j':
-			if (m_gunBarrel->GetJointAngle() > (0.1f*b2_pi))
+			if (m_gunBarrel->GetJointAngle() > (0.07f)) // 7 degress deperession from level
 				m_gunBarrel->SetMotorSpeed(-1.0f);
 			break;
+			
+
+		case 'o':
+				m_roundType++;
+				if(m_roundType == 0)
+					m_bulletVelocity = 950.0f;
+				else if(m_roundType == 1)
+					m_bulletVelocity = 845.0f;
+				else if (m_roundType == 2)
+					m_bulletVelocity = 880.0f;
+				else
+					m_roundType = -1;
+				break;
 
 		case 'm':
 				m_gunBarrel->SetMotorSpeed(0.0f);
-
-				// disabled because it destroys the shell before 
-				// it even initialises it!
-				/*if (m_shell != NULL)
+				
+				if (m_shell != NULL)
 				{
 					m_world->DestroyBody(m_shell);
 					m_shell = NULL;
-				}*/
-				b2CircleShape shape;
-				shape.m_radius = 0.09f;
+				}
+
+				b2PolygonShape shape;
+				b2Vec2 vertices[5];
+				vertices[0].Set(0.0f, 0.0f);
+				vertices[1].Set(0.256f, 0.0f);
+				vertices[2].Set(0.512f, 0.064f);
+				vertices[3].Set(0.256f, 0.128f);
+				vertices[4].Set(0.0f, 0.128);
+				shape.Set(vertices, 5);
 
 				b2FixtureDef fsd;
 				fsd.shape = &shape;
-				fsd.density = 20.0f;
+				fsd.density = 28.3f;
 				fsd.restitution = 0.05f;
 
 				b2Vec2 posn = m_gunBarrel->GetAnchorB();
 				float32 angle = m_gunBarrel->GetJointAngle()
 					+ m_turret->GetAngle();
 
-				posn.x += 1.5f * cos(angle);
-				posn.y += 1.5f * sin(angle);
+				posn.x += 2.0f * cos(angle);
+				posn.y += 2.0f * sin(angle);
 
 				b2BodyDef bsd;
 				bsd.type = b2_dynamicBody;
 				bsd.bullet = true;
-				bsd.position.Set(posn.x, posn.y);
+				bsd.position.Set(posn.x+2.0f, posn.y);
+				bsd.angle = angle;
 
 				m_shell = m_world->CreateBody(&bsd);
 				m_shell->CreateFixture(&fsd);
-				m_shell->SetLinearVelocity(b2Vec2(400.0f*cos(angle),
-					400.0f*sin(angle)));
+				m_shell->SetLinearVelocity(b2Vec2(m_bulletVelocity*cos(angle),
+					m_bulletVelocity*sin(angle)));
 				break;
 
 		}
@@ -527,9 +554,9 @@ public:
 
 	void Step(Settings* settings)
 	{
-		m_debugDraw.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, hz down = q, hz up = e, gun up = u, gun down = j, fire = m");
+		m_debugDraw.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, hz down = q, hz up = e, gun up = u, gun down = j, fire = m, charge size = o");
 		m_textLine += 15;
-		m_debugDraw.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", m_hz, m_zeta);
+		m_debugDraw.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g, current charge size = %g", m_hz, m_zeta, m_bulletVelocity);
 		m_textLine += 15;
 
 		settings->viewCenter.x = m_JadgTiger->GetPosition().x;
@@ -564,9 +591,14 @@ public:
 
 	b2Body* m_shell;
 
+	int m_roundType;
+
 	float32 m_hz;
 	float32 m_zeta;
 	float32 m_speed;
+	float32 m_mass;
+	float32 m_torque;
+	float32 m_bulletVelocity;
 
 	b2WheelJoint* m_spring1;
 	b2WheelJoint* m_spring2;
