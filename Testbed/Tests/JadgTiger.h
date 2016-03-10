@@ -410,6 +410,90 @@ public:
 			vertices[2].Set(4.0f, 2.77f);
 			vertices[3].Set(3.88f, 2.77f);
 			miscCross2.Set(vertices, 4);
+
+			b2PolygonShape miscSide1;
+			vertices[0].Set(2.72f, 2.03f);
+			vertices[1].Set(2.9f, 2.03f);
+			vertices[2].Set(2.9f, 2.34f);
+			vertices[3].Set(2.72f, 2.34f);
+			miscSide1.Set(vertices, 4);
+
+			b2PolygonShape miscSide2;
+			vertices[0].Set(3.27f, 2.03f);
+			vertices[1].Set(3.42f, 2.03f);
+			vertices[2].Set(3.42f, 2.34f);
+			vertices[3].Set(3.27f, 2.34f);
+			miscSide2.Set(vertices, 4);
+
+			b2PolygonShape miscSide3;
+			vertices[0].Set(3.67f, 2.03f);
+			vertices[1].Set(3.82f, 2.03f);
+			vertices[2].Set(3.82f, 2.34f);
+			vertices[3].Set(3.67f, 2.34f);
+			miscSide3.Set(vertices, 4);
+
+			b2PolygonShape miscSide4;
+			vertices[0].Set(4.09f, 2.03f);
+			vertices[1].Set(4.24f, 2.03f);
+			vertices[2].Set(4.24f, 2.34f);
+			vertices[3].Set(4.09f, 2.34f);
+			miscSide4.Set(vertices, 4);
+
+			b2PolygonShape miscSide5;
+			vertices[0].Set(4.49f, 2.03f);
+			vertices[1].Set(4.64f, 2.03f);
+			vertices[2].Set(4.64f, 2.34f);
+			vertices[3].Set(4.49f, 2.34f);
+			miscSide5.Set(vertices, 4);
+
+			b2PolygonShape miscSide6;
+			vertices[0].Set(5.0f, 2.05f);
+			vertices[1].Set(5.18f, 2.05f);
+			vertices[2].Set(5.18f, 2.34f);
+			vertices[3].Set(5.0f, 2.34f);
+			miscSide6.Set(vertices, 4);
+
+			b2PolygonShape miscSide7;
+			vertices[0].Set(2.77f, 2.43f);
+			vertices[1].Set(3.02f, 2.43f);
+			vertices[2].Set(3.02f, 2.63f);
+			vertices[3].Set(2.77f, 2.63f);
+			miscSide7.Set(vertices, 4);
+
+			b2PolygonShape miscSide8;
+			vertices[0].Set(3.28f, 2.43f);
+			vertices[1].Set(3.42f, 2.43f);
+			vertices[2].Set(3.42f, 2.65f);
+			vertices[3].Set(3.28f, 2.65f);
+			miscSide8.Set(vertices, 4);
+
+			b2PolygonShape miscSide9;
+			vertices[0].Set(3.68f, 2.43f);
+			vertices[1].Set(3.82f, 2.43f);
+			vertices[2].Set(3.82f, 2.65f);
+			vertices[3].Set(3.68f, 2.65f);
+			miscSide9.Set(vertices, 4);
+
+			b2PolygonShape miscSide10;
+			vertices[0].Set(4.12f, 2.43f);
+			vertices[1].Set(4.27f, 2.43f);
+			vertices[2].Set(4.27f, 2.65f);
+			vertices[3].Set(4.12f, 2.65f);
+			miscSide10.Set(vertices, 4);
+
+			b2PolygonShape miscSide11;
+			vertices[0].Set(4.52f, 2.43f);
+			vertices[1].Set(4.77f, 2.43f);
+			vertices[2].Set(4.77f, 2.65f);
+			vertices[3].Set(4.52f, 2.65f);
+			miscSide11.Set(vertices, 4);
+
+			b2PolygonShape miscSide12;
+			vertices[0].Set(5.03f, 2.46f);
+			vertices[1].Set(5.19f, 2.46f);
+			vertices[2].Set(5.19f, 2.62f);
+			vertices[3].Set(5.03f, 2.62f);
+			miscSide12.Set(vertices, 4);
 			
 
 			b2CircleShape circle;
@@ -453,6 +537,18 @@ public:
 			m_turret->CreateFixture(&miscTop10, 1.0f);
 			m_turret->CreateFixture(&miscCross1, 1.0f);
 			m_turret->CreateFixture(&miscCross2, 1.0f);
+			m_turret->CreateFixture(&miscSide1, 1.0f);
+			m_turret->CreateFixture(&miscSide2, 1.0f);
+			m_turret->CreateFixture(&miscSide3, 1.0f);
+			m_turret->CreateFixture(&miscSide4, 1.0f);
+			m_turret->CreateFixture(&miscSide5, 1.0f);
+			m_turret->CreateFixture(&miscSide6, 1.0f);
+			m_turret->CreateFixture(&miscSide7, 1.0f);
+			m_turret->CreateFixture(&miscSide8, 1.0f);
+			m_turret->CreateFixture(&miscSide9, 1.0f);
+			m_turret->CreateFixture(&miscSide10, 1.0f);
+			m_turret->CreateFixture(&miscSide11, 1.0f);
+			m_turret->CreateFixture(&miscSide12, 1.0f);
 
 			m_gun = m_world->CreateBody(&bd);
 			m_gun->CreateFixture(&gunpt1, 1.0f); // gun shroud
