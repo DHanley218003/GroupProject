@@ -19,7 +19,6 @@
 #ifndef JadgTiger_H
 #define JadgTiger_H
 
-// This is a fun demo that shows off the wheel joint
 class JadgTiger : Test
 {
 public:
@@ -494,12 +493,216 @@ public:
 			vertices[2].Set(5.19f, 2.62f);
 			vertices[3].Set(5.03f, 2.62f);
 			miscSide12.Set(vertices, 4);
+
+			// track
+			#define DEGTORAD 0.0174532925199432957f
+			#define RADTODEG 57.295779513082320876f
+
+			b2PolygonShape trackSegment;
+			trackSegment.SetAsBox(0.08f, 0.05f);
+
+			float t_x = 0.4f;
+			float t_y = 1.0f;
 			
+			b2BodyDef bd;
+			bd.type = b2_dynamicBody;
+			bd.position.Set(t_x, t_y);
+			t_x += 0.08f;
+
+			b2FixtureDef fd;
+			fd.shape = &trackSegment;
+			fd.density = 1.0f;
+			fd.friction = 1.0f;
+			fd.filter.categoryBits = 0x0002;
+			fd.filter.maskBits = 0xFFFF & ~0x0004;
+			
+			b2Body* m_link = m_world->CreateBody( &bd ); //create first link
+			m_link->CreateFixture( &fd );
+			b2Body* m_link_coppy = m_link;
+
+			b2RevoluteJointDef jdd;
+			jdd.localAnchorA.Set( 0.04f, 0.0f);
+			jdd.localAnchorB.Set(-0.04f, 0.0f);
+
+			for (int i = 0; i < 46; i++) //top part of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(t_x, t_y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				t_x += 0.08f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			float angle = 78.0f;
+			float angle_2 = -14.5;
+			float radius = 0.27f;
+			float _x = 7.18f;
+			float _y = 1.8f;
+
+			for (int i = 0; i < 9; i++) //front wheel
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x+radius*cos(angle*DEGTORAD), _y+radius*sin(angle*DEGTORAD));
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+				
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+			
+				angle_2 -= 15.5f;
+				angle -= 16.0f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			angle_2 += 5.5f;
+			_x = 7.18f;
+			_y = 0.5f;
+			for (int i = 0; i < 11; i++) //from the front wheel to the bottom part of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x, _y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+				
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+
+				_x -= 0.067f;
+				_y -= 0.04f;
+				
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			t_x = 4.0f;
+			t_y = 0.045f;
+			for (int i = 0; i < 31; i++) //bottom part of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(t_x, t_y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				t_x -= 0.08f;
+				
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
+
+				m_link = m_track;//prepare for next iteration
+			}
+			
+			angle_2 = 162.2f;
+			_x = 2.0f;
+			_y = 0.053f;
+			for (int i = 0; i < 12; i++) //from the back wheel to bottom of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x, _y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+				
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+
+				_x -= 0.075f;
+				_y += 0.022f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			angle = 243.35f;
+			angle_2 = 156.35f;
+			radius = 0.355f;
+			_x = 2.4f;
+			_y = 0.4f;
+
+			for (int i = 0; i < 12; i++) //back wheel
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x+radius*cos(angle*DEGTORAD), _y+radius*sin(angle*DEGTORAD));
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+				
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+			
+				angle_2 -= 12.85f;
+				angle -= 12.85f;
+			
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			jdd.bodyA = m_link;
+			jdd.bodyB = m_link_coppy;
+			jdd.collideConnected = false;
+			m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
+			
+			//end of the track
 
 			b2CircleShape circle;
 			circle.m_radius = 0.34f;
 
-			b2BodyDef bd;
+			//b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position.Set(0.0f, 0.0f);
 			m_JadgTiger = m_world->CreateBody(&bd);
@@ -572,7 +775,7 @@ public:
 			jtbd.Initialize(m_turret, m_gun, b2Vec2(5.32f, 2.29f));
 			m_gunBarrel = (b2RevoluteJoint*)m_world->CreateJoint(&jtbd);
 
-			b2FixtureDef fd;
+			//b2FixtureDef fd;
 			fd.shape = &circle;
 			fd.density = m_mass;
 			fd.friction = 0.9f;
@@ -722,67 +925,27 @@ public:
 		switch (key)
 		{
 		case 'a':
-			m_speed = b2Min(5.0f, m_speed + 1.0f);
-			m_spring1->SetMotorSpeed(m_speed);
-			m_spring2->SetMotorSpeed(m_speed);
-			m_spring3->SetMotorSpeed(m_speed);
-			m_spring4->SetMotorSpeed(m_speed);
-			m_spring5->SetMotorSpeed(m_speed);
-			m_spring6->SetMotorSpeed(m_speed);
-			m_spring7->SetMotorSpeed(m_speed);
-			m_spring8->SetMotorSpeed(m_speed);
-			m_spring9->SetMotorSpeed(m_speed);
+			if(m_torque < 100.0f)
+				m_torque = 100.0f;
+			m_speed = b2Min(4.0f, m_speed + 1.0f);
 			break;
 
 		case 's':
-			m_spring1->SetMotorSpeed(0.0f);
-			m_spring2->SetMotorSpeed(0.0f);
-			m_spring3->SetMotorSpeed(0.0f);
-			m_spring4->SetMotorSpeed(0.0f);
-			m_spring5->SetMotorSpeed(0.0f);
-			m_spring6->SetMotorSpeed(0.0f);
-			m_spring7->SetMotorSpeed(0.0f);
-			m_spring8->SetMotorSpeed(0.0f);
-			m_spring9->SetMotorSpeed(0.0f);
+			m_speed = 0;
+			m_torque = 100.0f;
 			break;
 
 		case 'd':
-			m_speed = b2Max(-5.0f, m_speed - 1.0f);
-			m_spring1->SetMotorSpeed(m_speed);
-			m_spring2->SetMotorSpeed(m_speed);
-			m_spring3->SetMotorSpeed(m_speed);
-			m_spring4->SetMotorSpeed(m_speed);
-			m_spring5->SetMotorSpeed(m_speed);
-			m_spring6->SetMotorSpeed(m_speed);
-			m_spring7->SetMotorSpeed(m_speed);
-			m_spring8->SetMotorSpeed(m_speed);
-			m_spring9->SetMotorSpeed(m_speed);
+			m_speed = b2Max(-34.0f, m_speed - 4.25f);
+			m_torque -= 10.0f;
 			break;
 
 		case 'q':
 			m_hz = b2Max(0.0f, m_hz - 1.0f);
-			m_spring1->SetSpringFrequencyHz(m_hz);
-			m_spring2->SetSpringFrequencyHz(m_hz);
-			m_spring3->SetSpringFrequencyHz(m_hz);
-			m_spring4->SetSpringFrequencyHz(m_hz);
-			m_spring5->SetSpringFrequencyHz(m_hz);
-			m_spring6->SetSpringFrequencyHz(m_hz);
-			m_spring7->SetSpringFrequencyHz(m_hz);
-			m_spring8->SetSpringFrequencyHz(m_hz);
-			m_spring9->SetSpringFrequencyHz(m_hz);
 			break;
 
 		case 'e':
 			m_hz += 1.0f;
-			m_spring1->SetSpringFrequencyHz(m_hz);
-			m_spring2->SetSpringFrequencyHz(m_hz);
-			m_spring3->SetSpringFrequencyHz(m_hz);
-			m_spring4->SetSpringFrequencyHz(m_hz);
-			m_spring5->SetSpringFrequencyHz(m_hz);
-			m_spring6->SetSpringFrequencyHz(m_hz);
-			m_spring7->SetSpringFrequencyHz(m_hz);
-			m_spring8->SetSpringFrequencyHz(m_hz);
-			m_spring9->SetSpringFrequencyHz(m_hz);
 			break;
 
 		case 'u':
@@ -851,6 +1014,25 @@ public:
 				break;
 
 		}
+		m_spring1->SetMotorSpeed(m_speed);
+		m_spring2->SetMotorSpeed(m_speed);
+		m_spring3->SetMotorSpeed(m_speed);
+		m_spring4->SetMotorSpeed(m_speed);
+		m_spring5->SetMotorSpeed(m_speed);
+		m_spring6->SetMotorSpeed(m_speed);
+		m_spring7->SetMotorSpeed(m_speed);
+		m_spring8->SetMotorSpeed(m_speed);
+		m_spring9->SetMotorSpeed(m_speed);
+
+		m_spring1->SetSpringFrequencyHz(m_hz);
+		m_spring2->SetSpringFrequencyHz(m_hz);
+		m_spring3->SetSpringFrequencyHz(m_hz);
+		m_spring4->SetSpringFrequencyHz(m_hz);
+		m_spring5->SetSpringFrequencyHz(m_hz);
+		m_spring6->SetSpringFrequencyHz(m_hz);
+		m_spring7->SetSpringFrequencyHz(m_hz);
+		m_spring8->SetSpringFrequencyHz(m_hz);
+		m_spring9->SetSpringFrequencyHz(m_hz);
 	}
 
 	void Step(Settings* settings)
@@ -886,6 +1068,7 @@ public:
 	b2Body* m_wheel8;
 	b2Body* m_wheel9;
 	b2Body* m_wheel10;
+	b2Body* m_track;
 
 	b2DistanceJoint* m_tankTurret;
 	b2RevoluteJoint* m_gunBarrel;
@@ -910,6 +1093,7 @@ public:
 	b2WheelJoint* m_spring7;
 	b2WheelJoint* m_spring8;
 	b2WheelJoint* m_spring9;
+	b2RevoluteJoint* m_joint;
 };
 
 #endif

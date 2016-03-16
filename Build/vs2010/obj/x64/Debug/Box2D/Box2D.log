@@ -1,1 +1,10 @@
-﻿  Box2D.vcxproj -> F:\Game Physics\GitFolder\GroupProject\Build\vs2010\bin\Debug\Box2D.lib
+﻿Build started 16/03/2016 14:47:07.
+     1>Project "C:\Users\a00218003\GroupProject\Build\vs2010\Box2D.vcxproj" on node 2 (Build target(s)).
+       Project file contains ToolsVersion="14.0". This toolset is unknown or missing. You may be able to resolve this by installing the appropriate .NET Framework for this toolset. Treating the project as if it had ToolsVersion="4.0".
+     1>Lib:
+         Box2D.vcxproj -> C:\Users\a00218003\GroupProject\Build\vs2010\bin\Debug\Box2D.lib
+     1>Done Building Project "C:\Users\a00218003\GroupProject\Build\vs2010\Box2D.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.06
