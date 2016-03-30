@@ -1,20 +1,20 @@
-/*
-* Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+	/*
+	* Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+	*
+	* This software is provided 'as-is', without any express or implied
+	* warranty.  In no event will the authors be held liable for any damages
+	* arising from the use of this software.
+	* Permission is granted to anyone to use this software for any purpose,
+	* including commercial applications, and to alter it and redistribute it
+	* freely, subject to the following restrictions:
+	* 1. The origin of this software must not be misrepresented; you must not
+	* claim that you wrote the original software. If you use this software
+	* in a product, an acknowledgment in the product documentation would be
+	* appreciated but is not required.
+	* 2. Altered source versions must be plainly marked as such, and must not be
+	* misrepresented as being the original software.
+	* 3. This notice may not be removed or altered from any source distribution.
+	*/
 
 #ifndef JadgTiger_H
 #define JadgTiger_H
@@ -24,7 +24,7 @@ class JadgTiger : Test
 public:
 
 	JadgTiger()
-	{		
+	{
 		m_hz = 4.0f;
 		m_zeta = 0.7f;
 		m_speed = 0;
@@ -32,6 +32,14 @@ public:
 		m_torque = 100.0f;
 		m_bulletVelocity = 950.0f;
 		m_roundType = 0;
+
+		enum _entityCategory
+		{
+			ODD_WHEEL = 0x0002,
+			EVEN_WHEEL = 0x0004,
+			TANK = 0x0008,
+			TRACKS = 0x0010
+		};
 
 		b2Body* ground = NULL;
 		{
@@ -48,7 +56,7 @@ public:
 			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
 			ground->CreateFixture(&fd);
 
-			float32 hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
+			float32 hs[10] = { 0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f };
 
 			float32 x = 20.0f, y1 = 0.0f, dx = 5.0f;
 
@@ -239,7 +247,7 @@ public:
 			vertices[2].Set(7.41f, 1.59f);
 			vertices[3].Set(7.17f, 1.59f);
 			miscFront1.Set(vertices, 4);
-			
+
 			b2PolygonShape miscFront2;
 			vertices[0].Set(7.2f, 1.59f);
 			vertices[1].Set(7.3f, 1.59f);
@@ -494,223 +502,30 @@ public:
 			vertices[3].Set(5.03f, 2.62f);
 			miscSide12.Set(vertices, 4);
 
-			// track
-			#define DEGTORAD 0.0174532925199432957f
-			#define RADTODEG 57.295779513082320876f
-
-			b2PolygonShape trackSegment;
-			trackSegment.SetAsBox(0.08f, 0.05f);
-
-			float t_x = 0.4f;
-			float t_y = 1.0f;
-			
-			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
-			bd.position.Set(t_x, t_y);
-			t_x += 0.08f;
-
-			b2FixtureDef fd;
-			fd.shape = &trackSegment;
-			fd.density = 1.0f;
-			fd.friction = 1.0f;
-			fd.filter.categoryBits = 0x0002;
-			fd.filter.maskBits = 0xFFFF & ~0x0004;
-			
-			b2Body* m_link = m_world->CreateBody( &bd ); //create first link
-			m_link->CreateFixture( &fd );
-			b2Body* m_link_coppy = m_link;
-
-			b2RevoluteJointDef jdd;
-			jdd.localAnchorA.Set( 0.04f, 0.0f);
-			jdd.localAnchorB.Set(-0.04f, 0.0f);
-
-			for (int i = 0; i < 46; i++) //top part of the track
-			{
-				bd.type = b2_dynamicBody;
-				bd.position.Set(t_x, t_y);
-
-				fd.shape = &trackSegment;
-				fd.density = 1.0f;
-				fd.friction = 1.0f;
-
-				m_track = m_world->CreateBody(&bd);
-				m_track->CreateFixture(&fd);
-
-				t_x += 0.08f;
-
-				jdd.bodyA = m_link;
-				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
-				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
-
-				m_link = m_track;//prepare for next iteration
-			}
-
-			float angle = 78.0f;
-			float angle_2 = -14.5;
-			float radius = 0.27f;
-			float _x = 7.18f;
-			float _y = 1.8f;
-
-			for (int i = 0; i < 9; i++) //front wheel
-			{
-				bd.type = b2_dynamicBody;
-				bd.position.Set(_x+radius*cos(angle*DEGTORAD), _y+radius*sin(angle*DEGTORAD));
-
-				fd.shape = &trackSegment;
-				fd.density = 1.0f;
-				fd.friction = 1.0f;
-
-				m_track = m_world->CreateBody(&bd);
-				m_track->CreateFixture(&fd);
-				
-				b2Vec2 pos = m_track->GetPosition();
-				m_track->SetTransform(pos, angle_2*DEGTORAD);
-			
-				angle_2 -= 15.5f;
-				angle -= 16.0f;
-
-				jdd.bodyA = m_link;
-				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
-				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
-
-				m_link = m_track;//prepare for next iteration
-			}
-
-			angle_2 += 5.5f;
-			_x = 7.18f;
-			_y = 0.5f;
-			for (int i = 0; i < 11; i++) //from the front wheel to the bottom part of the track
-			{
-				bd.type = b2_dynamicBody;
-				bd.position.Set(_x, _y);
-
-				fd.shape = &trackSegment;
-				fd.density = 1.0f;
-				fd.friction = 1.0f;
-
-				m_track = m_world->CreateBody(&bd);
-				m_track->CreateFixture(&fd);
-				
-				b2Vec2 pos = m_track->GetPosition();
-				m_track->SetTransform(pos, angle_2*DEGTORAD);
-
-				_x -= 0.067f;
-				_y -= 0.04f;
-				
-				jdd.bodyA = m_link;
-				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
-				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
-
-				m_link = m_track;//prepare for next iteration
-			}
-
-			t_x = 4.0f;
-			t_y = 0.045f;
-			for (int i = 0; i < 31; i++) //bottom part of the track
-			{
-				bd.type = b2_dynamicBody;
-				bd.position.Set(t_x, t_y);
-
-				fd.shape = &trackSegment;
-				fd.density = 1.0f;
-				fd.friction = 1.0f;
-
-				m_track = m_world->CreateBody(&bd);
-				m_track->CreateFixture(&fd);
-
-				t_x -= 0.08f;
-				
-				jdd.bodyA = m_link;
-				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
-				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
-
-				m_link = m_track;//prepare for next iteration
-			}
-			
-			angle_2 = 162.2f;
-			_x = 2.0f;
-			_y = 0.053f;
-			for (int i = 0; i < 12; i++) //from the back wheel to bottom of the track
-			{
-				bd.type = b2_dynamicBody;
-				bd.position.Set(_x, _y);
-
-				fd.shape = &trackSegment;
-				fd.density = 1.0f;
-				fd.friction = 1.0f;
-
-				m_track = m_world->CreateBody(&bd);
-				m_track->CreateFixture(&fd);
-				
-				b2Vec2 pos = m_track->GetPosition();
-				m_track->SetTransform(pos, angle_2*DEGTORAD);
-
-				_x -= 0.075f;
-				_y += 0.022f;
-
-				jdd.bodyA = m_link;
-				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
-				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
-
-				m_link = m_track;//prepare for next iteration
-			}
-
-			angle = 243.35f;
-			angle_2 = 156.35f;
-			radius = 0.355f;
-			_x = 2.4f;
-			_y = 0.4f;
-
-			for (int i = 0; i < 12; i++) //back wheel
-			{
-				bd.type = b2_dynamicBody;
-				bd.position.Set(_x+radius*cos(angle*DEGTORAD), _y+radius*sin(angle*DEGTORAD));
-
-				fd.shape = &trackSegment;
-				fd.density = 1.0f;
-				fd.friction = 1.0f;
-
-				m_track = m_world->CreateBody(&bd);
-				m_track->CreateFixture(&fd);
-				
-				b2Vec2 pos = m_track->GetPosition();
-				m_track->SetTransform(pos, angle_2*DEGTORAD);
-			
-				angle_2 -= 12.85f;
-				angle -= 12.85f;
-			
-				jdd.bodyA = m_link;
-				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
-				m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
-
-				m_link = m_track;//prepare for next iteration
-			}
-
-			jdd.bodyA = m_link;
-			jdd.bodyB = m_link_coppy;
-			jdd.collideConnected = false;
-			m_joint = (b2RevoluteJoint*)m_world->CreateJoint( &jdd );
-			
-			//end of the track
-
 			b2CircleShape circle;
 			circle.m_radius = 0.34f;
 
-			//b2BodyDef bd;
+			b2FixtureDef fd;
+			fd.shape = &lowerChassispt1;
+			fd.density = m_mass;
+			fd.filter.categoryBits = TANK;
+			fd.filter.maskBits = 0xFFFF & ~TRACKS;
+
+			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position.Set(0.0f, 0.0f);
+
 			m_JadgTiger = m_world->CreateBody(&bd);
-			m_JadgTiger->CreateFixture(&lowerChassispt1, m_mass);
-			m_JadgTiger->CreateFixture(&lowerChassispt2, m_mass);
-			m_JadgTiger->CreateFixture(&lowerChassispt3, m_mass);
-			m_JadgTiger->CreateFixture(&upperChassispt1, m_mass);
-			m_JadgTiger->CreateFixture(&upperChassispt2, m_mass);
+
+			m_JadgTiger->CreateFixture(&fd);
+			fd.shape = &lowerChassispt2;
+			m_JadgTiger->CreateFixture(&fd);
+			fd.shape = &lowerChassispt3;
+			m_JadgTiger->CreateFixture(&fd);
+			fd.shape = &upperChassispt1;
+			m_JadgTiger->CreateFixture(&fd);
+			fd.shape = &upperChassispt2;
+			m_JadgTiger->CreateFixture(&fd);
 			m_JadgTiger->CreateFixture(&miscFront1, m_mass);
 			m_JadgTiger->CreateFixture(&miscFront2, m_mass);
 			m_JadgTiger->CreateFixture(&miscFront3, m_mass);
@@ -761,7 +576,7 @@ public:
 			b2DistanceJointDef jtd;
 			jtd.collideConnected = true;
 			jtd.length = 2.0f;
-			jtd.Initialize(m_JadgTiger, m_turret, b2Vec2(4,1.84), b2Vec2(4,2));
+			jtd.Initialize(m_JadgTiger, m_turret, b2Vec2(4, 1.84), b2Vec2(4, 2));
 			m_tankTurret = (b2DistanceJoint*)m_world->CreateJoint(&jtd);
 
 
@@ -779,10 +594,10 @@ public:
 			fd.shape = &circle;
 			fd.density = m_mass;
 			fd.friction = 0.9f;
-			fd.filter.categoryBits = 0x0002;
-			fd.filter.maskBits = 0xFFFF & ~0x0004;
+			fd.filter.categoryBits = ODD_WHEEL;
+			fd.filter.maskBits = 0xFFFF & ~EVEN_WHEEL;
 
-			
+
 			bd.position.Set(2.33f, 0.4f);
 			m_wheel1 = m_world->CreateBody(&bd);
 			m_wheel1->CreateFixture(&fd);
@@ -803,7 +618,7 @@ public:
 			m_wheel9 = m_world->CreateBody(&bd);
 			m_wheel9->CreateFixture(&fd);
 
-			fd.filter.categoryBits = 0x0004;
+			fd.filter.categoryBits = EVEN_WHEEL;
 			fd.filter.maskBits = 0xFFFF;
 
 
@@ -917,6 +732,208 @@ public:
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring9 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+
+			// track
+			#define DEGTORAD 0.0174532925199432957f
+			#define RADTODEG 57.295779513082320876f
+
+			b2PolygonShape trackSegment;
+			trackSegment.SetAsBox(0.08f, 0.05f);
+
+			float t_x = 3.55f;
+			float t_y = 1.3f;
+
+			bd.type = b2_dynamicBody;
+			bd.position.Set(t_x, t_y);
+			t_x += 0.08f;
+
+			fd.shape = &trackSegment;
+			fd.density = 1.0f;
+			fd.friction = 1.0f;
+			fd.filter.categoryBits = TRACKS;
+			fd.filter.maskBits = 0xFFFF & ~TANK;
+
+			b2Body* m_link = m_world->CreateBody(&bd); //create first link
+			m_link->CreateFixture(&fd);
+			b2Body* m_link_coppy = m_link;
+
+			b2RevoluteJointDef jdd;
+			jdd.localAnchorA.Set(0.04f, 0.0f);
+			jdd.localAnchorB.Set(-0.04f, 0.0f);
+
+			for (int i = 0; i < 32; i++) //top part of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(t_x, t_y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				t_x += 0.08f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+				
+				m_link = m_track;//prepare for next iteration
+			}
+
+			float angle = 78.0f;
+			float angle_2 = -14.5;
+			float radius = 0.47f;
+			float _x = 7.25f;
+			float _y = 0.8f;
+
+			for (int i = 0; i < 11; i++) //front wheel
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x + radius*cos(angle*DEGTORAD), _y + radius*sin(angle*DEGTORAD));
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+
+				angle_2 -= 15.5f;
+				angle -= 16.0f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			angle_2 += 5.5f;
+			_x = 7.5f;
+			_y = 0.5f;
+			for (int i = 0; i < 13; i++) //from the front wheel to the bottom part of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x, _y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+
+				_x -= 0.067f;
+				_y -= 0.04f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			t_x = 5.5f;
+			t_y = 0.045f;
+			for (int i = 0; i < 32; i++) //bottom part of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(t_x, t_y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				t_x -= 0.08f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			angle_2 = 162.2f;
+			_x = 2.0f;
+			_y = 0.053f;
+			for (int i = 0; i < 12; i++) //from the back wheel to bottom of the track
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x, _y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+
+				_x -= 0.075f;
+				_y += 0.022f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			angle = 243.35f;
+			angle_2 = 156.35f;
+			radius = 0.38f;
+			_x = 1.3f;
+			_y = 0.7f;
+
+			for (int i = 0; i < 12; i++) //back wheel
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x + radius*cos(angle*DEGTORAD), _y + radius*sin(angle*DEGTORAD));
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+
+				angle_2 -= 12.85f;
+				angle -= 12.85f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = false;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+
+				m_link = m_track;//prepare for next iteration
+			}
+
+			jdd.bodyA = m_link;
+			jdd.bodyB = m_link_coppy;
+			jdd.collideConnected = false;
+			m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+
 		}
 	}
 
@@ -925,7 +942,7 @@ public:
 		switch (key)
 		{
 		case 'a':
-			if(m_torque < 100.0f)
+			if (m_torque < 100.0f)
 				m_torque = 100.0f;
 			m_speed = b2Min(4.0f, m_speed + 1.0f);
 			break;
@@ -957,61 +974,61 @@ public:
 			if (m_gunBarrel->GetJointAngle() > (0.07f)) // 7 degress deperession from level
 				m_gunBarrel->SetMotorSpeed(-1.0f);
 			break;
-			
+
 
 		case 'o':
-				m_roundType++;
-				if(m_roundType == 0)
-					m_bulletVelocity = 950.0f;
-				else if(m_roundType == 1)
-					m_bulletVelocity = 845.0f;
-				else if (m_roundType == 2)
-					m_bulletVelocity = 880.0f;
-				else
-					m_roundType = -1;
-				break;
+			m_roundType++;
+			if (m_roundType == 0)
+				m_bulletVelocity = 950.0f;
+			else if (m_roundType == 1)
+				m_bulletVelocity = 845.0f;
+			else if (m_roundType == 2)
+				m_bulletVelocity = 880.0f;
+			else
+				m_roundType = -1;
+			break;
 
 		case 'm':
-				m_gunBarrel->SetMotorSpeed(0.0f);
-				
-				if (m_shell != NULL)
-				{
-					m_world->DestroyBody(m_shell);
-					m_shell = NULL;
-				}
+			m_gunBarrel->SetMotorSpeed(0.0f);
 
-				b2PolygonShape shape;
-				b2Vec2 vertices[5];
-				vertices[0].Set(0.0f, 0.0f);
-				vertices[1].Set(0.256f, 0.0f);
-				vertices[2].Set(0.512f, 0.064f);
-				vertices[3].Set(0.256f, 0.128f);
-				vertices[4].Set(0.0f, 0.128);
-				shape.Set(vertices, 5);
+			if (m_shell != NULL)
+			{
+				m_world->DestroyBody(m_shell);
+				m_shell = NULL;
+			}
 
-				b2FixtureDef fsd;
-				fsd.shape = &shape;
-				fsd.density = 28.3f;
-				fsd.restitution = 0.05f;
+			b2PolygonShape shape;
+			b2Vec2 vertices[5];
+			vertices[0].Set(0.0f, 0.0f);
+			vertices[1].Set(0.256f, 0.0f);
+			vertices[2].Set(0.512f, 0.064f);
+			vertices[3].Set(0.256f, 0.128f);
+			vertices[4].Set(0.0f, 0.128);
+			shape.Set(vertices, 5);
 
-				b2Vec2 posn = m_gunBarrel->GetAnchorB();
-				float32 angle = m_gunBarrel->GetJointAngle()
-					+ m_turret->GetAngle();
+			b2FixtureDef fsd;
+			fsd.shape = &shape;
+			fsd.density = 28.3f;
+			fsd.restitution = 0.05f;
 
-				posn.x += 2.0f * cos(angle);
-				posn.y += 2.0f * sin(angle);
+			b2Vec2 posn = m_gunBarrel->GetAnchorB();
+			float32 angle = m_gunBarrel->GetJointAngle()
+				+ m_turret->GetAngle();
 
-				b2BodyDef bsd;
-				bsd.type = b2_dynamicBody;
-				bsd.bullet = true;
-				bsd.position.Set(posn.x+2.0f, posn.y);
-				bsd.angle = angle;
+			posn.x += 2.0f * cos(angle);
+			posn.y += 2.0f * sin(angle);
 
-				m_shell = m_world->CreateBody(&bsd);
-				m_shell->CreateFixture(&fsd);
-				m_shell->SetLinearVelocity(b2Vec2(m_bulletVelocity*cos(angle),
-					m_bulletVelocity*sin(angle)));
-				break;
+			b2BodyDef bsd;
+			bsd.type = b2_dynamicBody;
+			bsd.bullet = true;
+			bsd.position.Set(posn.x + 2.0f, posn.y);
+			bsd.angle = angle;
+
+			m_shell = m_world->CreateBody(&bsd);
+			m_shell->CreateFixture(&fsd);
+			m_shell->SetLinearVelocity(b2Vec2(m_bulletVelocity*cos(angle),
+				m_bulletVelocity*sin(angle)));
+			break;
 
 		}
 		m_spring1->SetMotorSpeed(m_speed);
