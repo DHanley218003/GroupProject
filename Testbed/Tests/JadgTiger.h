@@ -29,7 +29,7 @@ public:
 		m_zeta = 0.7f;
 		m_speed = 0;
 		m_mass = 11.95f;
-		m_torque = 100.0f;
+		m_torque = 150.0f;
 		m_bulletVelocity = 950.0f;
 		m_roundType = 0;
 
@@ -765,8 +765,8 @@ public:
 			b2PolygonShape trackSegment;
 			trackSegment.SetAsBox(0.08f, 0.05f);
 
-			float t_x = 3.55f;
-			float t_y = 1.3f;
+			float t_x = 1.55f;
+			float t_y = 1.05f;
 
 			bd.type = b2_dynamicBody;
 			bd.position.Set(t_x, t_y);
@@ -786,7 +786,7 @@ public:
 			jdd.localAnchorA.Set(0.04f, 0.0f);
 			jdd.localAnchorB.Set(-0.04f, 0.0f);
 
-			for (int i = 0; i < 32; i++) //top part of the track
+			for (int i = 0; i < 30; i++) //top part of the track
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(t_x, t_y);
@@ -798,23 +798,53 @@ public:
 				m_track = m_world->CreateBody(&bd);
 				m_track->CreateFixture(&fd);
 
-				t_x += 0.08f;
+				t_x += 0.17f;
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
+				jdd.collideConnected = true;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 				
 				m_link = m_track;//prepare for next iteration
 			}
 
-			float angle = 78.0f;
-			float angle_2 = -14.5;
-			float radius = 0.47f;
-			float _x = 7.25f;
-			float _y = 0.9f;
+			float _x = 6.6f;
+			float _y = 1.1f;
+			float angle = 110.0f;
+			float angle_2 = 0;
 
-			for (int i = 0; i < 11; i++) //front wheel
+			for (int i = 0; i < 6; i++) //from the top part of the track to the front wheel
+			{
+				bd.type = b2_dynamicBody;
+				bd.position.Set(_x, _y);
+
+				fd.shape = &trackSegment;
+				fd.density = 1.0f;
+				fd.friction = 1.0f;
+
+				m_track = m_world->CreateBody(&bd);
+				m_track->CreateFixture(&fd);
+
+				b2Vec2 pos = m_track->GetPosition();
+				m_track->SetTransform(pos, angle_2*DEGTORAD);
+
+				_x += 0.067f;
+				_y += 0.04f;
+
+				jdd.bodyA = m_link;
+				jdd.bodyB = m_track;
+				jdd.collideConnected = true;
+				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
+
+				m_link = m_track;//prepare for next iteration
+			}
+			angle = 110.0f;
+			angle_2 = 0;
+			float radius = 0.5f;
+			_x = 7.15f;
+			_y = 0.855f;
+
+			for (int i = 0; i < 12; i++) //front wheel
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(_x + radius*cos(angle*DEGTORAD), _y + radius*sin(angle*DEGTORAD));
@@ -830,20 +860,20 @@ public:
 				m_track->SetTransform(pos, angle_2*DEGTORAD);
 
 				angle_2 -= 15.5f;
-				angle -= 16.0f;
+				angle -= 18.0f;
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
+				jdd.collideConnected = true;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
 			}
 
 			angle_2 += 5.5f;
-			_x = 7.5f;
-			_y = 0.5f;
-			for (int i = 0; i < 13; i++) //from the front wheel to the bottom part of the track
+			_x = 7.05f;
+			_y = 0.35f;
+			for (int i = 0; i < 5; i++) //from the front wheel to the bottom part of the track
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(_x, _y);
@@ -858,20 +888,20 @@ public:
 				b2Vec2 pos = m_track->GetPosition();
 				m_track->SetTransform(pos, angle_2*DEGTORAD);
 
-				_x -= 0.067f;
-				_y -= 0.04f;
+				_x -= 0.124f;
+				_y -= 0.08f;
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
+				jdd.collideConnected = true;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
 			}
 
-			t_x = 5.5f;
+			t_x = 6.5f;
 			t_y = 0.045f;
-			for (int i = 0; i < 32; i++) //bottom part of the track
+			for (int i = 0; i < 28; i++) //bottom part of the track
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(t_x, t_y);
@@ -883,20 +913,20 @@ public:
 				m_track = m_world->CreateBody(&bd);
 				m_track->CreateFixture(&fd);
 
-				t_x -= 0.08f;
+				t_x -= 0.17f;
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
+				jdd.collideConnected = true;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
 			}
 
 			angle_2 = 162.2f;
-			_x = 2.0f;
-			_y = 0.053f;
-			for (int i = 0; i < 12; i++) //from the back wheel to bottom of the track
+			_x = 1.8f;
+			_y = 0.06f;
+			for (int i = 0; i < 8; i++) //from the back wheel to bottom of the track
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(_x, _y);
@@ -916,7 +946,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
+				jdd.collideConnected = true;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
@@ -925,10 +955,10 @@ public:
 			angle = 243.35f;
 			angle_2 = 156.35f;
 			radius = 0.38f;
-			_x = 1.3f;
-			_y = 0.65f;
+			_x = 1.32f;
+			_y = 0.67f;
 
-			for (int i = 0; i < 12; i++) //back wheel
+			for (int i = 0; i < 13; i++) //back wheel
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(_x + radius*cos(angle*DEGTORAD), _y + radius*sin(angle*DEGTORAD));
@@ -948,7 +978,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = false;
+				jdd.collideConnected = true;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
@@ -956,7 +986,7 @@ public:
 
 			jdd.bodyA = m_link;
 			jdd.bodyB = m_link_coppy;
-			jdd.collideConnected = false;
+			jdd.collideConnected = true;
 			m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 		}
@@ -979,7 +1009,7 @@ public:
 
 		case 'd':
 			m_speed = b2Max(-15.0f, m_speed - 1.875f);
-			m_torque -= 10.0f;
+			m_torque -= 4.0f;
 			break;
 
 		case 'q':
