@@ -408,15 +408,13 @@ public:
 			miscGunStand.SetAsBox(0.01f, 0.45f, b2Vec2(1.73f, 2.39f), 0.0f);
 
 			b2PolygonShape miscGun1;
-			//miscGun.SetAsBox(0.01f, 0.25f, b2Vec2(1.73f, 2.85f), 45.0f);
-			vertices[0].Set(1.13f, 2.9f);
-			vertices[1].Set(1.59f, 2.9f);
-			vertices[2].Set(1.59f, 2.92f);
-			vertices[3].Set(1.13f, 2.92f);
+			vertices[0].Set(1.13f, 2.86f);
+			vertices[1].Set(1.59f, 2.86f);
+			vertices[2].Set(1.59f, 2.88f);
+			vertices[3].Set(1.13f, 2.88f);
 			miscGun1.Set(vertices, 4);
 
 			b2PolygonShape miscGun2;
-			//miscGun.SetAsBox(0.01f, 0.25f, b2Vec2(1.73f, 2.85f), 45.0f); 2.33
 			vertices[0].Set(1.59f, 2.84f);
 			vertices[1].Set(2.19f, 2.84f);
 			vertices[2].Set(2.19f, 2.88f);
@@ -424,20 +422,25 @@ public:
 			miscGun2.Set(vertices, 4);
 
 			b2PolygonShape miscGun3;
-			//miscGun.SetAsBox(0.01f, 0.25f, b2Vec2(1.73f, 2.85f), 45.0f); 2.33
-			vertices[0].Set(2.19f, 2.9f);
-			vertices[1].Set(2.25f, 2.9f);
-			vertices[2].Set(2.25f, 2.92f);
-			vertices[3].Set(2.19f, 2.92f);
+			vertices[0].Set(2.19f, 2.86f);
+			vertices[1].Set(2.25f, 2.86f);
+			vertices[2].Set(2.25f, 2.88f);
+			vertices[3].Set(2.19f, 2.88f);
 			miscGun3.Set(vertices, 4);
 
 			b2PolygonShape miscGun4;
-			//miscGun.SetAsBox(0.01f, 0.25f, b2Vec2(1.73f, 2.85f), 45.0f); 2.33
-			vertices[0].Set(2.25f, 2.9f);
+			vertices[0].Set(2.25f, 2.86f);
 			vertices[1].Set(2.33f, 2.84f);
-			vertices[2].Set(2.33f, 2.86f);
-			vertices[3].Set(2.25f, 2.92f);
+			vertices[2].Set(2.33f, 2.9f);
+			vertices[3].Set(2.25f, 2.88f);
 			miscGun4.Set(vertices, 4);
+
+			b2PolygonShape miscGun5;
+			vertices[0].Set(1.99f, 2.8f);
+			vertices[1].Set(2.01f, 2.8f);
+			vertices[2].Set(2.01f, 2.84f);
+			vertices[3].Set(1.99f, 2.84f);
+			miscGun5.Set(vertices, 4);
 
 			b2PolygonShape miscGunStock;
 			vertices[0].Set(4.7f, 2.83f);
@@ -468,88 +471,32 @@ public:
 			miscCross2.Set(vertices, 4);
 
 			b2PolygonShape miscSide1;
-			vertices[0].Set(2.72f, 2.03f);
-			vertices[1].Set(2.9f, 2.03f);
-			vertices[2].Set(2.9f, 2.34f);
-			vertices[3].Set(2.72f, 2.34f);
+			vertices[0].Set(2.82f, 2.21f);
+			vertices[1].Set(3.45f, 2.21f);
+			vertices[2].Set(3.45f, 2.51f);
+			vertices[3].Set(2.82f, 2.51f);
 			miscSide1.Set(vertices, 4);
 
 			b2PolygonShape miscSide2;
-			vertices[0].Set(3.27f, 2.03f);
-			vertices[1].Set(3.42f, 2.03f);
-			vertices[2].Set(3.42f, 2.34f);
-			vertices[3].Set(3.27f, 2.34f);
+			vertices[0].Set(2.82f, 1.89f);
+			vertices[1].Set(3.45f, 1.89f);
+			vertices[2].Set(3.45f, 2.19f);
+			vertices[3].Set(2.82f, 2.19f);
 			miscSide2.Set(vertices, 4);
 
 			b2PolygonShape miscSide3;
-			vertices[0].Set(3.67f, 2.03f);
-			vertices[1].Set(3.82f, 2.03f);
-			vertices[2].Set(3.82f, 2.34f);
-			vertices[3].Set(3.67f, 2.34f);
+			vertices[0].Set(4.6f, 2.21f);
+			vertices[1].Set(5.23f, 2.21f);
+			vertices[2].Set(5.23f, 2.51f);
+			vertices[3].Set(4.6f, 2.51f);
 			miscSide3.Set(vertices, 4);
 
 			b2PolygonShape miscSide4;
-			vertices[0].Set(4.09f, 2.03f);
-			vertices[1].Set(4.24f, 2.03f);
-			vertices[2].Set(4.24f, 2.34f);
-			vertices[3].Set(4.09f, 2.34f);
+			vertices[0].Set(4.6f, 1.89f);
+			vertices[1].Set(5.23f, 1.89f);
+			vertices[2].Set(5.23f, 2.19f);
+			vertices[3].Set(4.6f, 2.19f);
 			miscSide4.Set(vertices, 4);
-
-			b2PolygonShape miscSide5;
-			vertices[0].Set(4.49f, 2.03f);
-			vertices[1].Set(4.64f, 2.03f);
-			vertices[2].Set(4.64f, 2.34f);
-			vertices[3].Set(4.49f, 2.34f);
-			miscSide5.Set(vertices, 4);
-
-			b2PolygonShape miscSide6;
-			vertices[0].Set(5.0f, 2.05f);
-			vertices[1].Set(5.18f, 2.05f);
-			vertices[2].Set(5.18f, 2.34f);
-			vertices[3].Set(5.0f, 2.34f);
-			miscSide6.Set(vertices, 4);
-
-			b2PolygonShape miscSide7;
-			vertices[0].Set(2.77f, 2.43f);
-			vertices[1].Set(3.02f, 2.43f);
-			vertices[2].Set(3.02f, 2.63f);
-			vertices[3].Set(2.77f, 2.63f);
-			miscSide7.Set(vertices, 4);
-
-			b2PolygonShape miscSide8;
-			vertices[0].Set(3.28f, 2.43f);
-			vertices[1].Set(3.42f, 2.43f);
-			vertices[2].Set(3.42f, 2.65f);
-			vertices[3].Set(3.28f, 2.65f);
-			miscSide8.Set(vertices, 4);
-
-			b2PolygonShape miscSide9;
-			vertices[0].Set(3.68f, 2.43f);
-			vertices[1].Set(3.82f, 2.43f);
-			vertices[2].Set(3.82f, 2.65f);
-			vertices[3].Set(3.68f, 2.65f);
-			miscSide9.Set(vertices, 4);
-
-			b2PolygonShape miscSide10;
-			vertices[0].Set(4.12f, 2.43f);
-			vertices[1].Set(4.27f, 2.43f);
-			vertices[2].Set(4.27f, 2.65f);
-			vertices[3].Set(4.12f, 2.65f);
-			miscSide10.Set(vertices, 4);
-
-			b2PolygonShape miscSide11;
-			vertices[0].Set(4.52f, 2.43f);
-			vertices[1].Set(4.77f, 2.43f);
-			vertices[2].Set(4.77f, 2.65f);
-			vertices[3].Set(4.52f, 2.65f);
-			miscSide11.Set(vertices, 4);
-
-			b2PolygonShape miscSide12;
-			vertices[0].Set(5.03f, 2.46f);
-			vertices[1].Set(5.19f, 2.46f);
-			vertices[2].Set(5.19f, 2.62f);
-			vertices[3].Set(5.03f, 2.62f);
-			miscSide12.Set(vertices, 4);
 
 			b2CircleShape circle;
 			circle.m_radius = 0.34f;
@@ -578,14 +525,6 @@ public:
 			fd.shape = &upperChassispt2;
 			m_JadgTiger->CreateFixture(&fd);
 			fd.shape = &miscGunStand;
-			m_JadgTiger->CreateFixture(&fd);
-			fd.shape = &miscGun1;
-			m_JadgTiger->CreateFixture(&fd);
-			fd.shape = &miscGun2;
-			m_JadgTiger->CreateFixture(&fd);
-			fd.shape = &miscGun3;
-			m_JadgTiger->CreateFixture(&fd);
-			fd.shape = &miscGun4;
 			m_JadgTiger->CreateFixture(&fd);
 			m_JadgTiger->CreateFixture(&miscFront1, m_mass);
 			m_JadgTiger->CreateFixture(&miscFront2, m_mass);
@@ -618,20 +557,19 @@ public:
 			m_turret->CreateFixture(&miscCross2, 1.0f);
 			m_turret->CreateFixture(&miscSide1, 1.0f);
 			m_turret->CreateFixture(&miscSide2, 1.0f);
-			m_turret->CreateFixture(&miscSide3, 1.0f);
+		    m_turret->CreateFixture(&miscSide3, 1.0f);
 			m_turret->CreateFixture(&miscSide4, 1.0f);
-			m_turret->CreateFixture(&miscSide5, 1.0f);
-			m_turret->CreateFixture(&miscSide6, 1.0f);
-			m_turret->CreateFixture(&miscSide7, 1.0f);
-			m_turret->CreateFixture(&miscSide8, 1.0f);
-			m_turret->CreateFixture(&miscSide9, 1.0f);
-			m_turret->CreateFixture(&miscSide10, 1.0f);
-			m_turret->CreateFixture(&miscSide11, 1.0f);
-			m_turret->CreateFixture(&miscSide12, 1.0f);
 
 			m_gun = m_world->CreateBody(&bd);
 			m_gun->CreateFixture(&gunpt1, 1.0f); // gun shroud
 			m_gun->CreateFixture(&gunpt2, 1.0f); // gun barrel
+
+			m_rearGun = m_world->CreateBody(&bd);
+			m_rearGun->CreateFixture(&miscGun1, 1.85f);
+			m_rearGun->CreateFixture(&miscGun2, 1.0f);
+			m_rearGun->CreateFixture(&miscGun3, 1.0f);
+			m_rearGun->CreateFixture(&miscGun4, 1.0f);
+			m_rearGun->CreateFixture(&miscGun5, 1.0f);
 
 			b2DistanceJointDef jtd;
 			jtd.collideConnected = true;
@@ -641,6 +579,7 @@ public:
 
 
 			b2RevoluteJointDef jtbd;
+			//Joint for gun on front of tank
 			jtbd.lowerAngle = -0.07f;
 			jtbd.upperAngle = 0.15f;
 			jtbd.enableLimit = true;
@@ -649,6 +588,13 @@ public:
 			jtbd.enableMotor = true;
 			jtbd.Initialize(m_turret, m_gun, b2Vec2(5.32f, 2.29f));
 			m_gunBarrel = (b2RevoluteJoint*)m_world->CreateJoint(&jtbd);
+
+			//Joint for gun on back of tank
+			jtbd.lowerAngle = -0.5f;
+			jtbd.upperAngle = 0.5f;
+			jtbd.enableMotor = false;
+			jtbd.Initialize(m_JadgTiger, m_rearGun, b2Vec2(1.73f, 2.84f));
+			m_rearGunJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jtbd);
 
 			//b2FixtureDef fd;
 			fd.shape = &circle;
@@ -1168,6 +1114,8 @@ public:
 
 	b2Body* m_gun;
 
+	b2Body* m_rearGun;
+
 	b2Body* m_wheel0;
 	b2Body* m_wheel1;
 	b2Body* m_wheel2;
@@ -1183,6 +1131,7 @@ public:
 
 	b2DistanceJoint* m_tankTurret;
 	b2RevoluteJoint* m_gunBarrel;
+	b2RevoluteJoint* m_rearGunJoint;
 
 	b2Body* m_shell;
 

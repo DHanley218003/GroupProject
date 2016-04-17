@@ -13,6 +13,6 @@ f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(1322): warning C43
 f:\game physics\gitfolder\groupproject\testbed\tests\JadgPanther.h(921): warning C4305: '=' : truncation from 'double' to 'float32'
 f:\game physics\gitfolder\groupproject\testbed\tests\JadgPanther.h(922): warning C4305: '=' : truncation from 'double' to 'float32'
 f:\game physics\gitfolder\groupproject\testbed\tests\JadgPanther.h(969): warning C4305: '=' : truncation from 'double' to 'float32'
-f:\game physics\gitfolder\groupproject\testbed\tests\JadgTiger.h(639): warning C4305: 'argument' : truncation from 'double' to 'float32'
-f:\game physics\gitfolder\groupproject\testbed\tests\JadgTiger.h(1096): warning C4305: 'argument' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\JadgTiger.h(577): warning C4305: 'argument' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\JadgTiger.h(1042): warning C4305: 'argument' : truncation from 'double' to 'float32'
   Testbed.vcxproj -> F:\Game Physics\GitFolder\GroupProject\Build\vs2010\bin\Debug\Testbed.exe
