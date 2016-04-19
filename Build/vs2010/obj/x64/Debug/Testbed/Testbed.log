@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿Build started 19/04/2016 15:00:56.
      1>Project "C:\Users\a00218003\Desktop\GroupProject\Build\vs2010\Testbed.vcxproj" on node 2 (Build target(s)).
        Project file contains ToolsVersion="14.0". This toolset is unknown or missing. You may be able to resolve this by installing the appropriate .NET Framework for this toolset. Treating the project as if it had ToolsVersion="4.0".
@@ -32,3 +33,23 @@
 Build succeeded.
 
 Time Elapsed 00:00:03.00
+=======
+﻿  TestEntries.cpp
+f:\game physics\gitfolder\groupproject\testbed\tests\TrackedCar.h(285): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(187): warning C4305: 'argument' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(188): warning C4305: 'argument' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(604): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(605): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(610): warning C4244: 'argument' : conversion from 'double' to 'float32', possible loss of data
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(652): warning C4244: 'argument' : conversion from 'double' to 'float32', possible loss of data
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(676): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(677): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(682): warning C4244: 'argument' : conversion from 'double' to 'float32', possible loss of data
+f:\game physics\gitfolder\groupproject\testbed\tests\TigerI.h(1322): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\JadgPanther.h(921): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\JadgPanther.h(922): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\JadgPanther.h(969): warning C4305: '=' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\JadgTiger.h(577): warning C4305: 'argument' : truncation from 'double' to 'float32'
+f:\game physics\gitfolder\groupproject\testbed\tests\JadgTiger.h(1042): warning C4305: 'argument' : truncation from 'double' to 'float32'
+  Testbed.vcxproj -> F:\Game Physics\GitFolder\GroupProject\Build\vs2010\bin\Debug\Testbed.exe
+>>>>>>> 73dcbc5a5234e39f445c43043a7a2f8ac5e85aba
