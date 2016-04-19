@@ -32,6 +32,7 @@ public:
 		m_torque = 150.0f;
 		m_bulletVelocity = 950.0f;
 		m_roundType = 0;
+		float density = 10.0f;
 
 		enum _entityCategory
 		{
@@ -765,7 +766,7 @@ public:
 			b2PolygonShape trackSegment;
 			trackSegment.SetAsBox(0.08f, 0.05f);
 
-			float t_x = 1.55f;
+			float t_x = 1.5f;
 			float t_y = 1.05f;
 
 			bd.type = b2_dynamicBody;
@@ -773,7 +774,7 @@ public:
 			t_x += 0.08f;
 
 			fd.shape = &trackSegment;
-			fd.density = 1.0f;
+			fd.density = density;
 			fd.friction = 1.0f;
 			fd.filter.categoryBits = TRACKS;
 			fd.filter.maskBits = 0xFFFF & ~TANK;
@@ -792,7 +793,7 @@ public:
 				bd.position.Set(t_x, t_y);
 
 				fd.shape = &trackSegment;
-				fd.density = 1.0f;
+				fd.density = density;
 				fd.friction = 1.0f;
 
 				m_track = m_world->CreateBody(&bd);
@@ -802,7 +803,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = true;
+				jdd.collideConnected = false;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 				
 				m_link = m_track;//prepare for next iteration
@@ -819,7 +820,7 @@ public:
 				bd.position.Set(_x, _y);
 
 				fd.shape = &trackSegment;
-				fd.density = 1.0f;
+				fd.density = density;
 				fd.friction = 1.0f;
 
 				m_track = m_world->CreateBody(&bd);
@@ -833,7 +834,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = true;
+				jdd.collideConnected = false;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
@@ -850,7 +851,7 @@ public:
 				bd.position.Set(_x + radius*cos(angle*DEGTORAD), _y + radius*sin(angle*DEGTORAD));
 
 				fd.shape = &trackSegment;
-				fd.density = 1.0f;
+				fd.density = density;
 				fd.friction = 1.0f;
 
 				m_track = m_world->CreateBody(&bd);
@@ -864,7 +865,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = true;
+				jdd.collideConnected = false;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
@@ -879,7 +880,7 @@ public:
 				bd.position.Set(_x, _y);
 
 				fd.shape = &trackSegment;
-				fd.density = 1.0f;
+				fd.density = density;
 				fd.friction = 1.0f;
 
 				m_track = m_world->CreateBody(&bd);
@@ -893,7 +894,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = true;
+				jdd.collideConnected = false;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
@@ -907,7 +908,7 @@ public:
 				bd.position.Set(t_x, t_y);
 
 				fd.shape = &trackSegment;
-				fd.density = 1.0f;
+				fd.density = density;
 				fd.friction = 1.0f;
 
 				m_track = m_world->CreateBody(&bd);
@@ -917,22 +918,22 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = true;
+				jdd.collideConnected = false;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
 			}
 
 			angle_2 = 162.2f;
-			_x = 1.8f;
+			_x = 1.7f;
 			_y = 0.06f;
-			for (int i = 0; i < 8; i++) //from the back wheel to bottom of the track
+			for (int i = 0; i < 9; i++) //from the back wheel to bottom of the track
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(_x, _y);
 
 				fd.shape = &trackSegment;
-				fd.density = 1.0f;
+				fd.density = density;
 				fd.friction = 1.0f;
 
 				m_track = m_world->CreateBody(&bd);
@@ -946,7 +947,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = true;
+				jdd.collideConnected = false;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
@@ -964,7 +965,7 @@ public:
 				bd.position.Set(_x + radius*cos(angle*DEGTORAD), _y + radius*sin(angle*DEGTORAD));
 
 				fd.shape = &trackSegment;
-				fd.density = 1.0f;
+				fd.density = density;
 				fd.friction = 1.0f;
 
 				m_track = m_world->CreateBody(&bd);
@@ -978,7 +979,7 @@ public:
 
 				jdd.bodyA = m_link;
 				jdd.bodyB = m_track;
-				jdd.collideConnected = true;
+				jdd.collideConnected = false;
 				m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jdd);
 
 				m_link = m_track;//prepare for next iteration
