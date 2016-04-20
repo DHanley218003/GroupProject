@@ -87,10 +87,10 @@ public:
 			ground->CreateFixture(&fd);
 
 			x += 40.0f;
-			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 10.0f, 5.0f));
+			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 10.0f, 3.0f));
 			ground->CreateFixture(&fd);
 
-			x += 20.0f;
+			x += 13.0f;
 			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
 			ground->CreateFixture(&fd);
 
@@ -659,11 +659,17 @@ public:
 			b2Vec2 axis(0.0f, 1.0f);
 
 			jd.Initialize(m_JadgTiger, m_wheel0, m_wheel0->GetPosition(), axis);
+			jd.motorSpeed = 0.0f;
+			jd.maxMotorTorque = m_torque;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring1 = (b2WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_JadgTiger, m_wheel10, m_wheel10->GetPosition(), axis);
+			jd.motorSpeed = 0.0f;
+			jd.maxMotorTorque = m_torque;
+			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
 			m_spring2 = (b2WheelJoint*)m_world->CreateJoint(&jd);
