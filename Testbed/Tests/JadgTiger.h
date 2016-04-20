@@ -57,7 +57,7 @@ public:
 			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
 			ground->CreateFixture(&fd);
 
-			float32 hs[10] = { 0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f };
+			float32 hs[10] = { 0.25f, 1.0f, 1.5f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f };
 
 			float32 x = 20.0f, y1 = 0.0f, dx = 5.0f;
 
@@ -768,7 +768,7 @@ public:
 			jdd.localAnchorA.Set(0.04f, 0.0f);
 			jdd.localAnchorB.Set(-0.04f, 0.0f);
 
-			for (int i = 0; i < 30; i++) //top part of the track
+			for (int i = 0; i < 32; i++) //top part of the track
 			{
 				bd.type = b2_dynamicBody;
 				bd.position.Set(t_x, t_y);
@@ -990,7 +990,7 @@ public:
 			break;
 
 		case 'd':
-			m_speed = b2Max(-15.0f, m_speed - 1.875f);
+			m_speed = b2Max(-8.0f, m_speed - 1.0f);
 			m_torque -= 4.0f;
 			break;
 
